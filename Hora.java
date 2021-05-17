@@ -3,11 +3,16 @@
  * Write a description of class Hora here.
  * 
  * @author Roberto Salazar M�rquez 
- * @version 1.0
+ * @version 2.0
  */
-public class Hora extends Thread {
+import java.awt.*;
+import java.awt.event.*;
+
+public class Hora extends Frame implements Runnable {
 
   private int Segundos;
+  private Thread hilo;
+  private TextField texto;
 
   public Hora(String nombre)
   {
@@ -15,14 +20,35 @@ public class Hora extends Thread {
       setHoras(0);
       setMinutos(0);
       setSegundos(0);
+      setLayout( new FlowLayout() );
+      texto = new TextField(8);
+      add(texto);
+      setSize(280,70);
+      setVisible(true);
+      
+      addWindowListener( new CW() );
+      
+      hilo = new Thread(this);
+      hilo.start();
   }
     
   public Hora(int h,String nombre)
   {
+      // Replicar esto en todos los constructores 
       super(nombre);
       setHoras(h);
       setMinutos(0);
       setSegundos(0);
+      setLayout( new FlowLayout() );
+      texto = new TextField(8);
+      add(texto);
+      setSize(280,70);
+      setVisible(true);
+      
+      addWindowListener( new CW() );
+      
+      hilo = new Thread(this);
+      hilo.start();
   }
   
   public Hora(int h, int m, String nombre)
@@ -31,6 +57,17 @@ public class Hora extends Thread {
       setHoras(h);
       setMinutos(m);
       setSegundos(0);
+      
+      setLayout( new FlowLayout() );
+      texto = new TextField(8);
+      add(texto);
+      setSize(280,70);
+      setVisible(true);
+      
+      addWindowListener( new CW() );
+      
+      hilo = new Thread(this);
+      hilo.start();
   }
   
   public Hora(int h, int m, int s, String nombre)
@@ -39,6 +76,16 @@ public class Hora extends Thread {
       setHoras(h);
       setMinutos(m);
       setSegundos(s);
+      setLayout( new FlowLayout() );
+      texto = new TextField(8);
+      add(texto);
+      setSize(280,70);
+      setVisible(true);
+      
+      addWindowListener( new CW() );
+      
+      hilo = new Thread(this);
+      hilo.start();
   }
     
   public void setHoras(int h)
@@ -50,6 +97,14 @@ public class Hora extends Thread {
           Segundos += h * 3600;
         }
       
+  }
+  
+  private class CW extends WindowAdapter 
+  {
+      public void windowClosing(WindowEvent e) {
+          setVisible(false);
+          dispose();
+      }
   }
   
   public int getHoras() 
@@ -131,11 +186,11 @@ public class Hora extends Thread {
       while( cont < 100 ) {
           tick();
           try {
-              sleep(1000);
+              hilo.sleep(1000);
           } catch (InterruptedException exp) {
               exp.printStackTrace() ;
           }
-          System.out.println( getName() + ": " + toString() );
+          texto.setText( toString() );
           cont++;
       }
       
@@ -145,8 +200,7 @@ public class Hora extends Thread {
   {
       Hora t = new Hora(11,20,"CDMX");
       Hora t1 = new Hora(17,37,"Londres");
-      t.start();
-      t1.start();
+
   }
   
   
